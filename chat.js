@@ -20,6 +20,8 @@
   // ── DOM refs ──────────────────────────────────────────────────────────────
   const widget        = document.getElementById('chat-widget');
   const toggleBtn     = document.getElementById('widget-toggle');
+  const widgetHeader  = document.querySelector('.widget-header');
+  const resizeGrip    = document.getElementById('resize-grip');
   const minimizeBtn   = document.getElementById('btn-minimize');
   const maximizeBtn   = document.getElementById('btn-maximize');
   const restoreBtn    = document.getElementById('btn-restore');
@@ -29,11 +31,53 @@
   const sendBtn       = document.getElementById('btn-send');
   const statusBar     = document.getElementById('chat-status');
 
+  // ── Position / size helpers ───────────────────────────────────────────────
+  // Saved inline styles while the widget is maximized (CSS class takes over)
+  let savedStyles = null;
+  // Whether the user has ever moved/resized the widget from its CSS default
+  let isPositioned = false;
+
+  // Clear all inline position/size styles → CSS class takes over
+  function clearInlineStyles() {
+    ['top','left','bottom','right','width','height'].forEach(p => widget.style.removeProperty(p));
+  }
+
+  // Convert CSS bottom/right positioning to explicit top/left so drag/resize work
+  function pinToTopLeft() {
+    const r = widget.getBoundingClientRect();
+    widget.style.bottom = 'auto';
+    widget.style.right  = 'auto';
+    widget.style.top    = r.top  + 'px';
+    widget.style.left   = r.left + 'px';
+    widget.style.width  = r.width  + 'px';
+    widget.style.height = r.height + 'px';
+  }
+
   // ── Widget state machine ──────────────────────────────────────────────────
   function setState(newState) {
+    const prev = widgetState;
     widget.classList.remove('collapsed', 'expanded', 'maximized');
     widget.classList.add(newState);
     widgetState = newState;
+
+    if (newState === 'maximized') {
+      // Save and clear inline styles — CSS class fully controls the maximized layout
+      savedStyles = {
+        top: widget.style.top, left: widget.style.left,
+        bottom: widget.style.bottom, right: widget.style.right,
+        width: widget.style.width, height: widget.style.height,
+      };
+      clearInlineStyles();
+    } else if (prev === 'maximized') {
+      // Restore position/size the widget had before maximizing
+      if (savedStyles) {
+        Object.entries(savedStyles).forEach(([p, v]) => { widget.style[p] = v; });
+      }
+    } else if (newState === 'collapsed') {
+      // Reset to CSS default (bottom-right) so next expand starts clean
+      clearInlineStyles();
+      isPositioned = false;
+    }
 
     // Join the session on first open
     if ((newState === 'expanded' || newState === 'maximized') && !hasJoined) {
@@ -42,8 +86,91 @@
     }
   }
 
+  // ── Drag (move by header) ─────────────────────────────────────────────────
+  widgetHeader.addEventListener('mousedown', (e) => {
+    if (widgetState !== 'expanded') return;
+    if (e.target.closest('.widget-controls')) return; // let control buttons work normally
+    e.preventDefault();
+
+    if (!isPositioned) { pinToTopLeft(); isPositioned = true; }
+
+    const startX   = e.clientX;
+    const startY   = e.clientY;
+    const startLeft = parseFloat(widget.style.left);
+    const startTop  = parseFloat(widget.style.top);
+
+    widgetHeader.classList.add('dragging');
+    document.body.style.userSelect = 'none';
+
+    function onMove(e) {
+      const w = widget.offsetWidth;
+      // Keep at least 60 px of the widget visible on each edge
+      const newLeft = Math.max(-(w - 60), Math.min(window.innerWidth  - 60, startLeft + e.clientX - startX));
+      const newTop  = Math.max(0,          Math.min(window.innerHeight - 60, startTop  + e.clientY - startY));
+      widget.style.left = newLeft + 'px';
+      widget.style.top  = newTop  + 'px';
+    }
+
+    function onUp() {
+      widgetHeader.classList.remove('dragging');
+      document.body.style.userSelect = '';
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup',   onUp);
+    }
+
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup',   onUp);
+  });
+
+  // ── Resize (drag the grip at bottom-right) ────────────────────────────────
+  resizeGrip.addEventListener('mousedown', (e) => {
+    if (widgetState !== 'expanded') return;
+    e.preventDefault();
+
+    if (!isPositioned) { pinToTopLeft(); isPositioned = true; }
+
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const startW = widget.offsetWidth;
+    const startH = widget.offsetHeight;
+    const MIN_W  = 280;
+    const MIN_H  = 360;
+
+    document.body.style.userSelect = 'none';
+
+    function onMove(e) {
+      const left = parseFloat(widget.style.left) || 0;
+      const top  = parseFloat(widget.style.top)  || 0;
+      const maxW = window.innerWidth  - left;
+      const maxH = window.innerHeight - top;
+      widget.style.width  = Math.max(MIN_W, Math.min(maxW, startW + e.clientX - startX)) + 'px';
+      widget.style.height = Math.max(MIN_H, Math.min(maxH, startH + e.clientY - startY)) + 'px';
+    }
+
+    function onUp() {
+      document.body.style.userSelect = '';
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup',   onUp);
+    }
+
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup',   onUp);
+  });
+
   // ── Control buttons ───────────────────────────────────────────────────────
   toggleBtn.addEventListener('click', () => setState('expanded'));
+
+  // Hover the toggle button for 1 s /second→ auto-expand
+  let hoverTimer = null;
+  toggleBtn.addEventListener('mouseenter', () => {
+    hoverTimer = setTimeout(() => {
+      if (widgetState === 'collapsed') setState('expanded');
+    }, 1000);
+  });
+  toggleBtn.addEventListener('mouseleave', () => {
+    clearTimeout(hoverTimer);
+    hoverTimer = null;
+  });
 
   minimizeBtn.addEventListener('click', () => setState('collapsed'));
 
@@ -149,7 +276,7 @@
     disableInput();
   });
 
-  socket.on('message', ({ role, text, time }) => {
+  socket.on('message', ({ text, time }) => {
     // Incoming messages are always from the librarian (visitor receives librarian's msgs)
     appendMessage({ role: 'other', text, time, typeLabel: 'Answer', roleLabel: 'librarian' });
   });
