@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Librarian Dashboard — Greenwood Library</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="librarian-page">
+
+  <!-- ── Passcode Auth Panel ── -->
+  <div id="auth-panel" class="auth-panel">
+    <div class="auth-card">
+      <div class="auth-card-header">
+        <svg class="auth-logo" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="4" y="4" width="11" height="24" rx="2" fill="#2d6a2f" opacity="0.85"/>
+          <rect x="17" y="4" width="11" height="24" rx="2" fill="#2d6a2f" opacity="0.55"/>
+          <rect x="4" y="4" width="1.5" height="24" fill="#c8a96e"/>
+          <rect x="17" y="4" width="1.5" height="24" fill="#c8a96e"/>
+        </svg>
+        <div>
+          <h1>Greenwood Library</h1>
+          <p class="auth-subtitle">Librarian Login</p>
+        </div>
+      </div>
+      <p class="auth-desc">Enter your passcode to begin answering visitor questions in real time.</p>
+
+      <div id="auth-error" class="auth-error hidden" role="alert"></div>
+
+      <form id="auth-form" autocomplete="off" novalidate>
+        <label for="passcode-input" class="sr-only">Passcode</label>
+        <input
+          type="password"
+          id="passcode-input"
+          class="auth-input"
+          placeholder="Enter passcode"
+          autocomplete="new-password"
+          required
+        >
+        <button type="submit" id="auth-submit" class="btn-auth-submit">Enter Dashboard</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── Librarian Chat Dashboard (hidden until auth succeeds) ── -->
+  <div id="chat-panel" class="librarian-chat-panel hidden">
+    <div class="lib-header">
+      <div class="lib-header-brand">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        <span>Librarian Dashboard</span>
+      </div>
+      <div class="lib-header-right">
+        <span id="lib-status" class="lib-status-indicator">
+          <span class="status-dot"></span>
+          <span id="lib-status-text">Waiting for visitor...</span>
+        </span>
+      </div>
+    </div>
+
+    <div id="lib-status-bar" class="chat-status" role="status" aria-live="polite">Waiting for visitor to connect...</div>
+
+    <div id="lib-chat-messages" class="chat-messages lib-messages" aria-live="polite" aria-label="Chat messages"></div>
+
+    <div class="chat-input-area">
+      <textarea
+        id="lib-message-input"
+        class="message-input"
+        placeholder="Type your answer... (Enter to send)"
+        rows="2"
+        aria-label="Answer input"
+        disabled
+      ></textarea>
+      <button id="lib-btn-send" class="btn-send" disabled aria-label="Send answer">Send</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/librarian.js"></script>
+</body>
+</html>
