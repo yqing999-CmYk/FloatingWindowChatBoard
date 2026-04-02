@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Greenwood Public Library</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- ── Site Header ── -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <svg class="brand-book-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="4" y="4" width="11" height="24" rx="2" fill="#faf7f0" opacity="0.9"/>
+          <rect x="17" y="4" width="11" height="24" rx="2" fill="#faf7f0" opacity="0.7"/>
+          <rect x="4" y="4" width="1.5" height="24" fill="#c8a96e"/>
+          <rect x="17" y="4" width="1.5" height="24" fill="#c8a96e"/>
+        </svg>
+        <div>
+          <h1 class="brand-name">Greenwood Public Library</h1>
+          <p class="brand-tagline">Your gateway to knowledge since 1952</p>
+        </div>
+      </div>
+      <nav class="header-nav">
+        <a href="#about">About</a>
+        <a href="#collections">Collections</a>
+        <a href="#hours">Hours &amp; Location</a>
+        <a href="#" id="open-chat-link" class="nav-chat-link">Chat with a Librarian</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero-inner">
+      <h2>Welcome to Greenwood Public Library</h2>
+      <p>Over 120,000 titles across print, digital, and audio formats. Our librarians are here to help you find exactly what you need.</p>
+      <button id="open-chat-btn" class="btn-primary">Ask a Librarian Now</button>
+    </div>
+  </section>
+
+  <!-- ── About ── -->
+  <section id="about" class="section section-light">
+    <div class="section-inner">
+      <h2>About Our Library</h2>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+              <path d="M2 17l10 5 10-5"/>
+              <path d="M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <h3>Rich Collections</h3>
+          <p>Browse our extensive collection spanning literature, science, history, arts, and more — all freely accessible to card holders.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <h3>Extended Hours</h3>
+          <p>Open seven days a week. Our digital resources are available around the clock for registered members.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <h3>Expert Librarians</h3>
+          <p>Our trained librarians are ready to assist with research, reading recommendations, and resource navigation — in person or via live chat.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Collections ── -->
+  <section id="collections" class="section section-warm">
+    <div class="section-inner">
+      <h2>Our Collections</h2>
+      <ul class="collections-list">
+        <li><strong>General Fiction &amp; Literature</strong> — 28,000+ titles</li>
+        <li><strong>Non-Fiction &amp; Reference</strong> — 35,000+ titles</li>
+        <li><strong>Children &amp; Young Adult</strong> — 18,000+ titles</li>
+        <li><strong>Digital eBooks &amp; Audiobooks</strong> — 22,000+ titles via our app</li>
+        <li><strong>Periodicals &amp; Journals</strong> — 400+ current subscriptions</li>
+        <li><strong>Local History Archive</strong> — rare manuscripts and photographs</li>
+      </ul>
+      <p class="collections-note">Can't find what you're looking for? <a href="#" class="inline-chat-link">Chat with a librarian</a> — we can place inter-library loans within 3 business days.</p>
+    </div>
+  </section>
+
+  <!-- ── Hours ── -->
+  <section id="hours" class="section section-light">
+    <div class="section-inner">
+      <h2>Hours &amp; Location</h2>
+      <div class="hours-grid">
+        <div>
+          <h3>Opening Hours</h3>
+          <table class="hours-table">
+            <tr><td>Monday – Friday</td><td>9:00 AM – 8:00 PM</td></tr>
+            <tr><td>Saturday</td><td>9:00 AM – 6:00 PM</td></tr>
+            <tr><td>Sunday</td><td>11:00 AM – 5:00 PM</td></tr>
+          </table>
+        </div>
+        <div>
+          <h3>Find Us</h3>
+          <address>
+            42 Greenwood Avenue<br>
+            Maplewood, WI 53201<br>
+            <a href="tel:+16085550143">(608) 555-0143</a><br>
+            <a href="mailto:info@greenwoodlibrary.example">info@greenwoodlibrary.example</a>
+          </address>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>&copy; 2026 Greenwood Public Library. All rights reserved.</p>
+      <p class="footer-chat-prompt">Have a question? <a href="#" class="footer-chat-link">Open live chat</a></p>
+    </div>
+  </footer>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       Floating Chat Widget
+       States managed by class on #chat-widget:
+         .collapsed   — shows only the toggle pill button
+         .expanded    — shows chat panel (360 × 480 px), bottom-right
+         .maximized   — shows chat panel centered with backdrop
+  ══════════════════════════════════════════════════════════════════════════ -->
+  <div id="chat-widget" class="chat-widget collapsed" role="complementary" aria-label="Live chat with librarian">
+
+    <!-- Collapsed toggle button -->
+    <button id="widget-toggle" class="widget-toggle-btn" aria-label="Open chat with librarian">
+      <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+      <span>Ask Librarian</span>
+    </button>
+
+    <!-- Expanded / Maximized panel -->
+    <div class="widget-panel" role="dialog" aria-label="Chat with librarian">
+      <div class="widget-header">
+        <div class="widget-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span>Library Chat</span>
+        </div>
+        <div class="widget-controls">
+          <button id="btn-minimize"  class="ctrl-btn" title="Minimize" aria-label="Minimize chat">&#x2212;</button>
+          <button id="btn-maximize"  class="ctrl-btn" title="Maximize" aria-label="Maximize chat">&#x25A1;</button>
+          <button id="btn-restore"   class="ctrl-btn" title="Restore"  aria-label="Restore chat">&#x2750;</button>
+          <button id="btn-close"     class="ctrl-btn ctrl-btn-close" title="Close" aria-label="Close chat">&#x2715;</button>
+        </div>
+      </div>
+
+      <div id="chat-status" class="chat-status" role="status" aria-live="polite">Connecting...</div>
+
+      <div id="chat-messages" class="chat-messages" aria-live="polite" aria-label="Chat messages"></div>
+
+      <div class="chat-input-area">
+        <textarea
+          id="message-input"
+          class="message-input"
+          placeholder="Type your question... (Enter to send)"
+          rows="2"
+          aria-label="Message input"
+          disabled
+        ></textarea>
+        <button id="btn-send" class="btn-send" disabled aria-label="Send message">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/chat.js"></script>
+</body>
+</html>
